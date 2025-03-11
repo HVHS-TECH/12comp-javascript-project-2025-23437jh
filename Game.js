@@ -14,7 +14,14 @@ const GameWidth = 1000;
 var GameTime = 15;
 // for the score
 var Score = 0;
-
+// surfaces you can jump on
+Jumpsurfaces = new Group();
+Jumpsurfaces.add(wallBot);
+Jumpsurfaces.add(Platform1);
+Jumpsurfaces.add(Platform2);
+Jumpsurfaces.add(Platform3);
+Jumpsurfaces.add(Platform4);
+Jumpsurfaces.add(Platform5);
 function setup() {
 	console.log("setup: ");
 	cnv = new Canvas (GameWidth,GameHeight);
@@ -45,7 +52,7 @@ function setup() {
     wallTop.bounciness = 1;
 	wallBot = new Sprite(0, 999, 2000, 8, 'k');
 	wallBot.color = 'black';
-    wallBot.bounciness = 1;
+    wallBot.bounciness = 0;
     //adding Gravity 
     world.gravity.y = 10;
 }
@@ -56,6 +63,14 @@ function setup() {
 function draw() {
 	background('gray');
     //KeyBoard controls 
+    Player.colliding(Jumpsurfaces.Group(), Jump);
+    function Jump() {     
+        console.log("Jump");  
+        if (kb.pressing('w')) {
+            // Set sprite's velocity upwards
+            Player.vel.y = -5;
+        }    
+    }
     if (kb.pressing('a')) {
         // Set sprite's velocity to the left
         Player.vel.x = -5;
@@ -64,13 +79,9 @@ function draw() {
         // Set sprite's velocity to the right
         Player.vel.x = 5;
     }
-    else if (kb.presses ('w')) {
-        // Set sprite's velocity upwards
-        Player.vel.y = -5
-    }
     else if (kb.pressing ('s')){
         // Set sprite's velocity downwards
-        Player.vel.y = 5
+        Player.vel.y = 5;
     }
     
 }
