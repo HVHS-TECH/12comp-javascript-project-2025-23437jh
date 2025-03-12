@@ -15,18 +15,13 @@ var GameTime = 15;
 // for the score
 var Score = 0;
 // surfaces you can jump on
-Jumpsurfaces = new Group();
-Jumpsurfaces.add(wallBot);
-Jumpsurfaces.add(Platform1);
-Jumpsurfaces.add(Platform2);
-Jumpsurfaces.add(Platform3);
-Jumpsurfaces.add(Platform4);
-Jumpsurfaces.add(Platform5);
 function setup() {
 	console.log("setup: ");
 	cnv = new Canvas (GameWidth,GameHeight);
+    // surfaces you can jump on
+    Jumpsurfaces = new Group();
     //code for Player sprite 
-	Player = new Sprite( 250,250, 25,25, 'd' );
+	Player = new Sprite( 250,250,25, 'd' );
 	Player.color = 'cyan';
     // code for Platforms
     Platform1 = new Sprite(100,250, 300,8, 'k');
@@ -34,7 +29,7 @@ function setup() {
     Platform3 = new Sprite(500,900, 300,8, 'k');
     Platform4 = new Sprite(500,700, 300,8, 'k');
     Platform5 = new Sprite(400,300, 300,8, 'k');
-
+    //Colour for Platforms 
     Platform1.color = 'green';
     Platform2.color = 'white';
     Platform3.color = 'blue';
@@ -53,38 +48,78 @@ function setup() {
 	wallBot = new Sprite(0, 999, 2000, 8, 'k');
 	wallBot.color = 'black';
     wallBot.bounciness = 0;
+    // contents of Jumpsurfaces group 
+    Jumpsurfaces.add(wallBot);
+    Jumpsurfaces.add(Platform1);
+    Jumpsurfaces.add(Platform2);
+    Jumpsurfaces.add(Platform3);
+    Jumpsurfaces.add(Platform4);
+    Jumpsurfaces.add(Platform5);
     //adding Gravity 
     world.gravity.y = 10;
+    Coins();
 }
-	
+
+function displayScore(){
+    textSize(35);
+    text("Score:"+Score ,50, 35);
+    // This is the Score
+    }
 /*******************************************************/
 // draw()
 /*******************************************************/
 function draw() {
 	background('gray');
-    //KeyBoard controls 
-    Player.colliding(Jumpsurfaces.Group(), Jump);
+    displayScore();
+    //KeyBoard controls   
+    Player.colliding(Jumpsurfaces, Jump);
     function Jump() {     
         console.log("Jump");  
         if (kb.pressing('w')) {
             // Set sprite's velocity upwards
-            Player.vel.y = -5;
+            Player.vel.y = -8;
         }    
     }
     if (kb.pressing('a')) {
         // Set sprite's velocity to the left
         Player.vel.x = -5;
     }
+    
     else if (kb.pressing ('d')) {    
         // Set sprite's velocity to the right
         Player.vel.x = 5;
     }
+  
     else if (kb.pressing ('s')){
         // Set sprite's velocity downwards
         Player.vel.y = 5;
     }
-    
 }
+
+function Coins() {
+    coinGroup = new Group();
+
+	for (i = 0; i < 8; i++) {
+
+		coin = new Sprite(900*Math.random(), 900*Math.random(), 20, 'd');
+		coin.vel.x = 3;
+		coin.vel.y = 4;
+		coin.bounciness = 1;
+		coin.friction = 0;
+        coin.color = 'gold'
+		coinGroup.add(coin);
+	}
+
+	// if any coin in the coin group colides with the Player call func2call
+	coinGroup.collides(Player, func2call);
+
+	function func2call(coin, circle) {
+		// Delete the coin that gets hit
+		coin.remove();
+        Score++;
+    }
+}
+/**************************
 
 /*******************************************************/
 //  END OF APP
