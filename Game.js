@@ -17,9 +17,22 @@ var Score = 0;
 // surfaces you can jump on
 function setup() {
 	console.log("setup: ");
+    hide();
 	cnv = new Canvas (GameWidth,GameHeight);
     // surfaces you can jump on
     Jumpsurfaces = new Group();
+    // all the sprites 
+    Sprites = new Group();
+    Sprite.add(Platform1);
+    Sprite.add(Platform2);
+    Sprite.add(Platform3);
+    Sprite.add(Platform4);
+    Sprite.add(Platform5);
+	wallLH
+	wallRH
+	wallTop
+    wallBot
+    Player
     //code for Player sprite 
 	Player = new Sprite( 250,250,25, 'd' );
 	Player.color = 'cyan';
@@ -58,8 +71,35 @@ function setup() {
     //adding Gravity 
     world.gravity.y = 10;
     Coins();
+
+
+
+function hide(){
+    Platform1.hide()
+    Platform2.hide()
+    Platform3.hide()
+    Platform4.hide()
+    Platform5.hide()
+	wallLH.hide()
+	wallRH.hide()
+	wallTop.hide()
+    wallBot.hide()
+    Player.hide()
 }
 
+function show(){
+    Platform1.show()
+    Platform2.show()
+    Platform3.show()
+    Platform4.show()
+    Platform5.show()
+	wallLH.show()
+	wallRH.show()
+	wallTop.show()
+    wallBot.show()
+    Player.show()
+}
+}
 function displayScore(){
     textSize(35);
     text("Score:"+Score ,50, 35);
