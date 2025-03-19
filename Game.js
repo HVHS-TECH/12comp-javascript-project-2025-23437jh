@@ -15,24 +15,15 @@ var GameTime = 15;
 // for the score
 var Score = 0;
 // surfaces you can jump on
+var Gamestate = 'start';
 function setup() {
 	console.log("setup: ");
-    hide();
 	cnv = new Canvas (GameWidth,GameHeight);
     // surfaces you can jump on
     Jumpsurfaces = new Group();
     // all the sprites 
     Sprites = new Group();
-    Sprite.add(Platform1);
-    Sprite.add(Platform2);
-    Sprite.add(Platform3);
-    Sprite.add(Platform4);
-    Sprite.add(Platform5);
-	wallLH
-	wallRH
-	wallTop
-    wallBot
-    Player
+
     //code for Player sprite 
 	Player = new Sprite( 250,250,25, 'd' );
 	Player.color = 'cyan';
@@ -68,49 +59,44 @@ function setup() {
     Jumpsurfaces.add(Platform3);
     Jumpsurfaces.add(Platform4);
     Jumpsurfaces.add(Platform5);
+    // contents of Sprites group
+    Sprites.add(Platform1);
+    Sprites.add(Platform2);
+    Sprites.add(Platform3);
+    Sprites.add(Platform4);
+    Sprites.add(Platform5);
+    Sprites.add(wallBot);
+    Sprites.add(wallTop);
+    Sprites.add(wallRH);
+    Sprites.add(wallLH);
+    Sprites.add(Player);
     //adding Gravity 
     world.gravity.y = 10;
-    Coins();
+    //Makes sprites disappear
+    Sprites.visible = false;
 
-
-
-function hide(){
-    Platform1.hide()
-    Platform2.hide()
-    Platform3.hide()
-    Platform4.hide()
-    Platform5.hide()
-	wallLH.hide()
-	wallRH.hide()
-	wallTop.hide()
-    wallBot.hide()
-    Player.hide()
 }
-
-function show(){
-    Platform1.show()
-    Platform2.show()
-    Platform3.show()
-    Platform4.show()
-    Platform5.show()
-	wallLH.show()
-	wallRH.show()
-	wallTop.show()
-    wallBot.show()
-    Player.show()
-}
-}
-function displayScore(){
-    textSize(35);
-    text("Score:"+Score ,50, 35);
-    // This is the Score
-    }
 /*******************************************************/
 // draw()
 /*******************************************************/
 function draw() {
 	background('gray');
-    displayScore();
+    
+    if (kb.pressing('q')&& Gamestate != 'running') {
+        Sprites.visible = true;
+        Coins();
+        Gamestate = 'running'
+    
+    }
+    
+    if (Gamestate == 'running'){
+        textSize(35);
+        text("Score:"+Score ,50, 35);
+    // This is the Score
+    }
+    if (Gamestate == 'start'){
+        
+    }
     //KeyBoard controls   
     Player.colliding(Jumpsurfaces, Jump);
     function Jump() {     
