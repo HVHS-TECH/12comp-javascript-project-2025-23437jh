@@ -6,6 +6,7 @@
 /*******************************************************/
 // setup()
 /*******************************************************/
+const Numberofplatforms = 8
 //for Game height 
 const GameHeight = 1000;
 // for the Canvas width
@@ -28,17 +29,23 @@ function setup() {
 	Player = new Sprite( 250,250,25, 'd' );
 	Player.color = 'cyan';
     // code for Platforms
-    Platform1 = new Sprite(100,250, 300,8, 'k');
-    Platform2 = new Sprite(200,800, 300,8, 'k');
-    Platform3 = new Sprite(500,900, 300,8, 'k');
-    Platform4 = new Sprite(500,700, 300,8, 'k');
-    Platform5 = new Sprite(400,300, 300,8, 'k');
+    //Platform1 = new Sprite(100,250, 100,8, 'k');
+   // Platform2 = new Sprite(200,800, 100,8, 'k');
+    //Platform3 = new Sprite(500,900, 100,8, 'k');
+   // Platform4 = new Sprite(500,700, 100,8, 'k');
+    //Platform5 = new Sprite(400,300, 100,8, 'k');
+   // Platform6 = new Sprite(900,500, 100,8, 'k');
+    //Platform7 = new Sprite(600,300, 100,8, 'k');
+    //Platform8 = new Sprite(700,500, 100,8, 'k');
     //Colour for Platforms 
-    Platform1.color = 'green';
-    Platform2.color = 'white';
-    Platform3.color = 'blue';
-    Platform4.color = 'black';
-    Platform5.color = 'red';
+    //Platform1.color = 'green';
+    //Platform2.color = 'white';
+    //Platform3.color = 'blue';
+   // Platform4.color = 'black';
+    //Platform5.color = 'red';
+    //Platform6.color = 'pink';
+    //Platform7.color = 'purple'
+    ///Platform8.color = 
     //code for wall sprites
     wallLH  = new Sprite(0, 1000, 8, 2000, 'k');
 	wallLH.color = 'black';
@@ -54,26 +61,31 @@ function setup() {
     wallBot.bounciness = 0;
     // contents of Jumpsurfaces group 
     Jumpsurfaces.add(wallBot);
-    Jumpsurfaces.add(Platform1);
-    Jumpsurfaces.add(Platform2);
-    Jumpsurfaces.add(Platform3);
-    Jumpsurfaces.add(Platform4);
-    Jumpsurfaces.add(Platform5);
     // contents of Sprites group
-    Sprites.add(Platform1);
-    Sprites.add(Platform2);
-    Sprites.add(Platform3);
-    Sprites.add(Platform4);
-    Sprites.add(Platform5);
     Sprites.add(wallBot);
     Sprites.add(wallTop);
     Sprites.add(wallRH);
     Sprites.add(wallLH);
     Sprites.add(Player);
+   // Sprites.add(platforms);
     //adding Gravity 
     world.gravity.y = 10;
     //Makes sprites disappear
     Sprites.visible = false;
+
+}
+
+function platforms(){
+    for (i = 0; i < Numberofplatforms; i++) {
+
+		platform = new Sprite(900*Math.random(), i*GameHeight/(Numberofplatforms+1), 100,8, 'k');
+		platform.bounciness = 1;
+		platform.friction = 0;
+        platform.color = 'White'
+		Sprites.add(platform);
+        Jumpsurfaces.add(platform);
+        
+	}
 
 }
 /*******************************************************/
@@ -85,6 +97,7 @@ function draw() {
     if (kb.pressing('q')&& Gamestate != 'running') {
         Sprites.visible = true;
         Coins();
+        platforms();
         Gamestate = 'running'
     
     }
