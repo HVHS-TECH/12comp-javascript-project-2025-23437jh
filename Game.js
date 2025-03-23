@@ -28,24 +28,6 @@ function setup() {
     //code for Player sprite 
 	Player = new Sprite( 250,250,25, 'd' );
 	Player.color = 'cyan';
-    // code for Platforms
-    //Platform1 = new Sprite(100,250, 100,8, 'k');
-   // Platform2 = new Sprite(200,800, 100,8, 'k');
-    //Platform3 = new Sprite(500,900, 100,8, 'k');
-   // Platform4 = new Sprite(500,700, 100,8, 'k');
-    //Platform5 = new Sprite(400,300, 100,8, 'k');
-   // Platform6 = new Sprite(900,500, 100,8, 'k');
-    //Platform7 = new Sprite(600,300, 100,8, 'k');
-    //Platform8 = new Sprite(700,500, 100,8, 'k');
-    //Colour for Platforms 
-    //Platform1.color = 'green';
-    //Platform2.color = 'white';
-    //Platform3.color = 'blue';
-   // Platform4.color = 'black';
-    //Platform5.color = 'red';
-    //Platform6.color = 'pink';
-    //Platform7.color = 'purple'
-    ///Platform8.color = 
     //code for wall sprites
     wallLH  = new Sprite(0, 1000, 8, 2000, 'k');
 	wallLH.color = 'black';
@@ -93,7 +75,6 @@ function platforms(){
 /*******************************************************/
 function draw() {
 	background('gray');
-    
     if (kb.pressing('q')&& Gamestate != 'running') {
         Sprites.visible = true;
         Coins();
@@ -107,8 +88,23 @@ function draw() {
         text("Score:"+Score ,50, 35);
     // This is the Score
     }
+    if (Gamestate == 'running'){
+        textSize(35);
+		text("Timer:"+( GameTime - Math.floor(millis()/1000 )), 50, 70);
+		fill('Black');}
     if (Gamestate == 'start'){
-        
+        text("Press Q to start",400,500)
+        text("Instructions: Jump from platform to platform using WASD collect as many coins as possible before the time limit ends if you get them all good Job",100,600)
+    }
+    if(Math.floor(millis()/1000) >= GameTime) {
+		// remove ervrything
+		coinGroup.remove();
+		Sprites.visible = false;
+		if(Score < 8 ){
+			background('red');
+			text("GAME OVER!!!!!!",400,500)
+			fill('black');
+        }
     }
     //KeyBoard controls   
     Player.colliding(Jumpsurfaces, Jump);
@@ -116,7 +112,7 @@ function draw() {
         console.log("Jump");  
         if (kb.pressing('w')) {
             // Set sprite's velocity upwards
-            Player.vel.y = -8;
+            Player.vel.y = -12;
         }    
     }
     if (kb.pressing('a')) {
