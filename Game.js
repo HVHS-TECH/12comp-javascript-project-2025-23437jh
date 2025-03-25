@@ -17,6 +17,14 @@ var GameTime = 15;
 var Score = 0;
 // surfaces you can jump on
 var Gamestate = 'start';
+
+var imgBG,imgFace;
+
+function preload() {
+    imgBG   =  loadImage('Images/Goldcoin.png');
+    imgFace =  loadImage('Images/Goldcoin.png');
+   }
+
 function setup() {
 	console.log("setup: ");
 	cnv = new Canvas (GameWidth,GameHeight);
@@ -26,7 +34,7 @@ function setup() {
     Sprites = new Group();
 
     //code for Player sprite 
-	Player = new Sprite( 250,250,25, 'd' );
+	Player = new Sprite( 250,250,25,25, 'd' );
 	Player.color = 'cyan';
     //code for wall sprites
     wallLH  = new Sprite(0, 1000, 8, 2000, 'k');
@@ -58,11 +66,13 @@ function setup() {
 }
 
 function platforms(){
-    for (i = 0; i < Numberofplatforms; i++) {
+    for (i = 1; i < Numberofplatforms; i++) {
 
-		platform = new Sprite(900*Math.random(), i*GameHeight/(Numberofplatforms+1), 100,8, 'k');
-		platform.bounciness = 1;
-		platform.friction = 0;
+        var platformX = 900 * Math.random();
+        var platfromY = i * (GameHeight /(Numberofplatforms));
+		platform = new Sprite(platformX, platfromY, 100, 8, 'k');
+		platform.bounciness = 0;
+		platform.friction = 5;
         platform.color = 'White'
 		Sprites.add(platform);
         Jumpsurfaces.add(platform);
@@ -80,19 +90,16 @@ function draw() {
         Coins();
         platforms();
         Gamestate = 'running'
-    
     }
     
     if (Gamestate == 'running'){
+        // This is the Score
         textSize(35);
         text("Score:"+Score ,50, 35);
-    // This is the Score
-    }
-    if (Gamestate == 'running'){
         textSize(35);
 		text("Timer:"+( GameTime - Math.floor(millis()/1000 )), 50, 70);
-		fill('Black');}
-    if (Gamestate == 'start'){
+		fill('Black');
+    } else if (Gamestate == 'start') {
         text("Press Q to start",400,500)
         text("Instructions: Jump from platform to platform using WASD collect as many coins as possible before the time limit ends if you get them all good Job",100,600)
     }
@@ -100,9 +107,10 @@ function draw() {
 		// remove ervrything
 		coinGroup.remove();
 		Sprites.visible = false;
-		if(Score < 8 ){
+		if(Score <= 8 ){
 			background('red');
 			text("GAME OVER!!!!!!",400,500)
+            text("Your Score:"+Score,400,700)
 			fill('black');
         }
     }
@@ -135,7 +143,6 @@ function Coins() {
     coinGroup = new Group();
 
 	for (i = 0; i < 8; i++) {
-
 		coin = new Sprite(900*Math.random(), 900*Math.random(), 20, 'd');
 		coin.vel.x = 3;
 		coin.vel.y = 4;
@@ -143,6 +150,8 @@ function Coins() {
 		coin.friction = 0;
         coin.color = 'gold'
 		coinGroup.add(coin);
+        coin.image = (Goldcoin.png);
+        imgFace.resize(50, 50);
 	}
 
 	// if any coin in the coin group colides with the Player call func2call
