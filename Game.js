@@ -18,12 +18,15 @@ var Score = 0;
 // surfaces you can jump on
 var Gamestate = 'start';
 
-var imgBG,imgFace;
-
+//var imgBG,imgFace;
+var Coinimage;
+var PlatformGrass;
+var Background;
 function preload() {
-    imgBG   =  loadImage('Images/Goldcoin.png');
-    imgFace =  loadImage('Images/Goldcoin.png');
-   }
+    Coinimage = loadImage('Images/Goldcoin.png')
+    PlatformGrass = loadImage('Images/GrassPlatform.png')
+    Background = loadImage('Images/GameScreenBackground.png')
+}
 
 function setup() {
 	console.log("setup: ");
@@ -76,6 +79,8 @@ function platforms(){
         platform.color = 'White'
 		Sprites.add(platform);
         Jumpsurfaces.add(platform);
+        platform.image = (PlatformGrass);
+        PlatformGrass.resize(100, 100);
         
 	}
 
@@ -150,8 +155,8 @@ function Coins() {
 		coin.friction = 0;
         coin.color = 'gold'
 		coinGroup.add(coin);
-        coin.image = (Goldcoin.png);
-        imgFace.resize(50, 50);
+        coin.image = (Coinimage);
+        Coinimage.resize(50, 50);
 	}
 
 	// if any coin in the coin group colides with the Player call func2call
