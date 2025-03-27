@@ -8,11 +8,11 @@
 /*******************************************************/
 const Numberofplatforms = 8
 //for Game height 
-const GameHeight = 1000;
+const GameHeight = 800;
 // for the Canvas width
-const GameWidth = 1000;
+const GameWidth = 800;
 // for the timer 
-var GameTime = 15;
+var GameTime = 1000000;
 // for the score
 var Score = 0;
 // surfaces you can jump on
@@ -40,16 +40,16 @@ function setup() {
 	Player = new Sprite( 250,250,25,25, 'd' );
 	Player.color = 'cyan';
     //code for wall sprites
-    wallLH  = new Sprite(0, 1000, 8, 2000, 'k');
-	wallLH.color = 'black';
-    wallLH.bounciness = 1;
-	wallRH  = new Sprite(1000, 0, 8, 2000, 'k');
+    wallL  = new Sprite(0, GameHeight, 8, GameHeight*2, 'k');
+	wallL.color = 'black';
+    wallL.bounciness = 1;
+	wallRH  = new Sprite(GameWidth, 0, 8, GameHeight*2, 'k');
 	wallRH.color = 'black';
     wallRH.bounciness = 1;
-	wallTop = new Sprite(0, 1, 2000, 8, 'k');
+	wallTop = new Sprite(0, 0, GameWidth*2, 8, 'k');
 	wallTop.color = 'black';
     wallTop.bounciness = 1;
-	wallBot = new Sprite(0, 999, 2000, 8, 'k');
+	wallBot = new Sprite(0, GameHeight, GameWidth*2, 8, 'k');
 	wallBot.color = 'black';
     wallBot.bounciness = 0;
     // contents of Jumpsurfaces group 
@@ -58,7 +58,7 @@ function setup() {
     Sprites.add(wallBot);
     Sprites.add(wallTop);
     Sprites.add(wallRH);
-    Sprites.add(wallLH);
+    Sprites.add(wallL);
     Sprites.add(Player);
    // Sprites.add(platforms);
     //adding Gravity 
@@ -71,7 +71,7 @@ function setup() {
 function platforms(){
     for (i = 1; i < Numberofplatforms; i++) {
 
-        var platformX = 900 * Math.random();
+        var platformX = GameWidth * Math.random();
         var platfromY = i * (GameHeight /(Numberofplatforms));
 		platform = new Sprite(platformX, platfromY, 100, 8, 'k');
 		platform.bounciness = 0;
@@ -89,7 +89,7 @@ function platforms(){
 // draw()
 /*******************************************************/
 function draw() {
-	background('gray');
+	background(Background);
     if (kb.pressing('q')&& Gamestate != 'running') {
         Sprites.visible = true;
         Coins();
@@ -100,13 +100,13 @@ function draw() {
     if (Gamestate == 'running'){
         // This is the Score
         textSize(35);
-        text("Score:"+Score ,50, 35);
+        text("Score:"+Score ,GameWidth/10-50, GameHeight/10-35);
         textSize(35);
-		text("Timer:"+( GameTime - Math.floor(millis()/1000 )), 50, 70);
+		text("Timer:"+( GameTime - Math.floor(millis()/1000 )), GameWidth/10-70, 70);
 		fill('Black');
     } else if (Gamestate == 'start') {
-        text("Press Q to start",400,500)
-        text("Instructions: Jump from platform to platform using WASD collect as many coins as possible before the time limit ends if you get them all good Job",100,600)
+        text("Press Q to start",GameWidth/2,GameHeight/2)
+        text("Instructions: Jump from platform to platform using WASD collect as many coins as possible before the time limit ends if you get them all good Job",GameWidth/2-GameWidth/2,GameHeight/2+GameHeight/10)
     }
     if(Math.floor(millis()/1000) >= GameTime) {
 		// remove ervrything
@@ -114,8 +114,8 @@ function draw() {
 		Sprites.visible = false;
 		if(Score <= 8 ){
 			background('red');
-			text("GAME OVER!!!!!!",400,500)
-            text("Your Score:"+Score,400,700)
+			text("GAME OVER!!!!!!",GameWidth/2,GameHeight/2)
+            text("Your Score:"+Score,GameWidth/2-100,GameHeight/2+200)
 			fill('black');
         }
     }
@@ -148,7 +148,7 @@ function Coins() {
     coinGroup = new Group();
 
 	for (i = 0; i < 8; i++) {
-		coin = new Sprite(900*Math.random(), 900*Math.random(), 20, 'd');
+		coin = new Sprite(GameWidth*Math.random(), GameHeight*Math.random(), 20, 'd');
 		coin.vel.x = 3;
 		coin.vel.y = 4;
 		coin.bounciness = 1;
