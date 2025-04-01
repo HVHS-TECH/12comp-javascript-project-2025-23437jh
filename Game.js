@@ -6,26 +6,29 @@
 /*******************************************************/
 // setup()
 /*******************************************************/
+//Future Joseph put const in all caps
 const Numberofplatforms = 8
 //for Game height 
 const GameHeight = 800;
 // for the Canvas width
 const GameWidth = 800;
 // for the timer 
-var GameTime = 1000000;
+var GameTime = 30;
 // for the score
 var Score = 0;
 // surfaces you can jump on
 var Gamestate = 'start';
-
-//var imgBG,imgFace;
+// Number of coins
+var Coinnumber = 10;
+//Images for sprites
 var Coinimage;
 var PlatformGrass;
+//Image for background
 var Background;
 function preload() {
     Coinimage = loadImage('Images/Goldcoin.png')
     PlatformGrass = loadImage('Images/GrassPlatform.png')
-    Background = loadImage('Images/GameScreenBackground.png')
+    Background = loadImage('Images/GameScreenBackground.jpg')
 }
 
 function setup() {
@@ -67,13 +70,13 @@ function setup() {
     Sprites.visible = false;
 
 }
-
+// Function to make the platforms and make them spawn in random places 
 function platforms(){
     for (i = 1; i < Numberofplatforms; i++) {
 
         var platformX = GameWidth * Math.random();
-        var platfromY = i * (GameHeight /(Numberofplatforms));
-		platform = new Sprite(platformX, platfromY, 100, 8, 'k');
+        var platformY = i * (GameHeight /(Numberofplatforms));
+		platform = new Sprite(platformX, platformY, 100, 8, 'k');
 		platform.bounciness = 0;
 		platform.friction = 5;
         platform.color = 'White'
@@ -100,7 +103,7 @@ function draw() {
     if (Gamestate == 'running'){
         // This is the Score
         textSize(35);
-        text("Score:"+Score ,GameWidth/10-50, GameHeight/10-35);
+        text("Score:"+Score ,GameWidth/10-65, GameHeight/10-50);
         textSize(35);
 		text("Timer:"+( GameTime - Math.floor(millis()/1000 )), GameWidth/10-70, 70);
 		fill('Black');
@@ -112,9 +115,9 @@ function draw() {
 		// remove ervrything
 		coinGroup.remove();
 		Sprites.visible = false;
-		if(Score <= 8 ){
-			background('red');
-			text("GAME OVER!!!!!!",GameWidth/2,GameHeight/2)
+		if(Score <= Coinnumber ){
+			background('pink');
+			text("End Game",GameWidth/2,GameHeight/2)
             text("Your Score:"+Score,GameWidth/2-100,GameHeight/2+200)
 			fill('black');
         }
@@ -125,7 +128,7 @@ function draw() {
         console.log("Jump");  
         if (kb.pressing('w')) {
             // Set sprite's velocity upwards
-            Player.vel.y = -12;
+            Player.vel.y = -8;
         }    
     }
     if (kb.pressing('a')) {
@@ -147,7 +150,7 @@ function draw() {
 function Coins() {
     coinGroup = new Group();
 
-	for (i = 0; i < 8; i++) {
+	for (i = 0; i < Coinnumber; i++) {
 		coin = new Sprite(GameWidth*Math.random(), GameHeight*Math.random(), 20, 'd');
 		coin.vel.x = 3;
 		coin.vel.y = 4;
