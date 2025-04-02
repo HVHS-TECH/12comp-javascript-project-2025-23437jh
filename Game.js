@@ -25,6 +25,8 @@ var Coinimage;
 var PlatformGrass;
 //Image for background
 var Background;
+//Restarts game
+var Restart;
 function preload() {
     Coinimage = loadImage('Images/Goldcoin.png')
     PlatformGrass = loadImage('Images/GrassPlatform.png')
@@ -68,8 +70,19 @@ function setup() {
     world.gravity.y = 10;
     //Makes sprites disappear
     Sprites.visible = false;
+    restart = createButton("Restart");
+    restart.position(width / 2 - 50, height / 2 + 75);
+    restart.mousePressed(restartGame); // restarts game
+    restart.hide(); // hides button
 
 }
+//function restartGame(){
+   // background(Background);
+   // Sprites.visible = true;
+   // Coins();
+   // platforms();
+  //  Gamestate = 'running'
+//}
 // Function to make the platforms and make them spawn in random places 
 function platforms(){
     for (i = 1; i < Numberofplatforms; i++) {
@@ -120,6 +133,7 @@ function draw() {
 			text("End Game",GameWidth/2,GameHeight/2)
             text("Your Score:"+Score,GameWidth/2-100,GameHeight/2+200)
 			fill('black');
+            restart.show()
         }
     }
     //KeyBoard controls   
