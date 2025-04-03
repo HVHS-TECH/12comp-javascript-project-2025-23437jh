@@ -27,6 +27,8 @@ var PlatformGrass;
 var Background;
 //Restarts game
 var Restart;
+//starttime
+var startTime
 function preload() {
     Coinimage = loadImage('Images/Goldcoin.png')
     PlatformGrass = loadImage('Images/GrassPlatform.png')
@@ -71,18 +73,18 @@ function setup() {
     //Makes sprites disappear
     Sprites.visible = false;
     restart = createButton("Restart");
-    restart.position(width / 2 - 50, height / 2 + 75);
+    restart.position(GameWidth / 2 - 50, GameHeight / 2 + 75);
     restart.mousePressed(restartGame); // restarts game
     restart.hide(); // hides button
 
 }
-//function restartGame(){
-   // background(Background);
-   // Sprites.visible = true;
-   // Coins();
-   // platforms();
-  //  Gamestate = 'running'
-//}
+function restartGame(){
+    background(Background);
+    Sprites.visible = true;
+    Coins();
+    platforms();
+    Gamestate = 'running'
+}
 // Function to make the platforms and make them spawn in random places 
 function platforms(){
     for (i = 1; i < Numberofplatforms; i++) {
@@ -111,6 +113,7 @@ function draw() {
         Coins();
         platforms();
         Gamestate = 'running'
+        startTime = millis()
     }
     
     if (Gamestate == 'running'){
@@ -118,7 +121,7 @@ function draw() {
         textSize(35);
         text("Score:"+Score ,GameWidth/10-65, GameHeight/10-50);
         textSize(35);
-		text("Timer:"+( GameTime - Math.floor(millis()/1000 )), GameWidth/10-70, 70);
+		text("Timer:"+( GameTime - Math.floor((millis()-startTime)/1000 )), GameWidth/10-70, 70);
 		fill('Black');
     } else if (Gamestate == 'start') {
         text("Press Q to start",GameWidth/2,GameHeight/2)
