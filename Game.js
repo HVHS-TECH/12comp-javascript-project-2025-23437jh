@@ -107,6 +107,7 @@ function platforms() {
 function draw() {
     background(Background);
     if (kb.pressing('q') && Gamestate != 'running') {
+        background(Background);
         Sprites.visible = true;
         Coins();
         platforms();
@@ -130,11 +131,9 @@ function draw() {
         coinGroup.remove();
         Sprites.visible = false;
         if (Score <= Coinnumber) {
-            background('pink');
             text("End Game", GameWidth / 2, GameHeight / 2)
             text("Your Score:" + Score, GameWidth / 2 - 100, GameHeight / 2 + 200)
             fill('black');
-            restart.show()
         }
     }
     //KeyBoard controls   
@@ -157,22 +156,8 @@ function draw() {
         // Set sprite's velocity downwards
         Player.vel.y = 5;
     }
-//Restart Game
-//function checkKey(_keyPressed) {
-    //if (_keyPressed === " " || _keyPressed === "Enter") {
-      //console.log("Game Started!");
-      //startGame();
-    //}
-    //else if (_keyPressed === 'r' || _keyPressed === 'R') {
-      //console.log("Game Restarted!");
-      //restartGame();
-    //}
- //}
-  
-  //function keyPressed() {
-    //checkKey(key);
-  
-  //}
+
+
 }
 
 function Coins() {
@@ -199,6 +184,34 @@ function Coins() {
         Score++;
     }
 }
+
+function keyPressed() {
+    //
+    if (checkkey(key)){
+        restartGame();
+    }
+}
+
+function checkkey(_keypressed){
+    if (_keypressed === "" ||_keypressed ==="Enter") {
+        console.log("Game Started");
+        return false;
+    }
+    else if (_keypressed === 'r' ||_keypressed === 'R'){
+        console.log("Game Restared");
+        return true;
+    }
+    return false;
+}
+
+function restartGame(){
+    Score = 0;
+    GameTime = 30;
+    Gamestate = 'start';
+    coinGroup.remove();
+    Sprites.visible = false;
+    background(Background);
+    }
 /**************************
 
 /*******************************************************/
