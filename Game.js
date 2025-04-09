@@ -12,8 +12,10 @@ const Numberofplatforms = 8
 const GameHeight = 800;
 // for the Canvas width
 const GameWidth = 800;
+// How long the game lasts
+var GameLength = 10
 // for the timer 
-var GameTime = 30;
+var GameTime = GameLength;
 // for the score
 var Score = 0;
 // surfaces you can jump on
@@ -43,11 +45,22 @@ function setup() {
     Jumpsurfaces = new Group();
     // all the sprites 
     Sprites = new Group();
+    //adding Gravity 
+    world.gravity.y = 10;
+    //Makes sprites disappear
+    Sprites.visible = false;
 
-    //code for Player sprite 
+
+}
+
+function makePlayer() {
+//code for Player sprite 
     Player = new Sprite(250, 250, 25, 25, 'd');
     Player.color = 'cyan';
-    //code for wall sprites
+    Sprites.add(Player);
+}
+
+function makeWalls() {
     wallL = new Sprite(0, GameHeight, 8, GameHeight * 2, 'k');
     wallL.color = 'black';
     wallL.bounciness = 1;
@@ -67,26 +80,12 @@ function setup() {
     Sprites.add(wallTop);
     Sprites.add(wallRH);
     Sprites.add(wallL);
-    Sprites.add(Player);
-    // Sprites.add(platforms);
-    //adding Gravity 
-    world.gravity.y = 10;
-    //Makes sprites disappear
-    Sprites.visible = false;
-
-
 }
-//function restartGame(){
-//background(Background);
-//Sprites.visible = true;
-//Coins();
-//platforms();
-//Gamestate = 'running'
-//}
+
+
 // Function to make the platforms and make them spawn in random places 
 function platforms() {
     for (i = 1; i < Numberofplatforms; i++) {
-
         var platformX = GameWidth * Math.random();
         var platformY = i * (GameHeight / (Numberofplatforms));
         platform = new Sprite(platformX, platformY, 100, 8, 'k');
@@ -97,67 +96,69 @@ function platforms() {
         Jumpsurfaces.add(platform);
         platform.image = (PlatformGrass);
         PlatformGrass.resize(100, 100);
-
     }
-
 }
 /*******************************************************/
 // draw()
 /*******************************************************/
 function draw() {
     background(Background);
-    if (kb.pressing('q') && Gamestate != 'running') {
-        background(Background);
-        Sprites.visible = true;
-        Coins();
-        platforms();
-        Gamestate = 'running'
-        startTime = millis()
-    }
 
-    if (Gamestate == 'running') {
+    if (Gamestate == 'start') {
+        if (kb.pressing('q')) {
+            Sprites.visible = true;
+            makePlayer();
+            Coins();
+            platforms();
+            makeWalls();
+            startTime = millis();
+            Gamestate = 'running';
+        }
+
+        text("Press Q to start", GameWidth / 2, GameHeight / 2)
+        text("Instructions: Jump from platform to platform using WASD collect as many coins as possible before the time limit ends if you get them all good Job", GameWidth / 2 - GameWidth / 2, GameHeight / 2 + GameHeight / 10)
+    } else if (Gamestate == 'running') {
         // This is the Score
         textSize(35);
         text("Score:" + Score, GameWidth / 10 - 65, GameHeight / 10 - 50);
         textSize(35);
         text("Timer:" + (GameTime - Math.floor((millis() - startTime) / 1000)), GameWidth / 10 - 70, 70);
         fill('Black');
-    } else if (Gamestate == 'start') {
-        text("Press Q to start", GameWidth / 2, GameHeight / 2)
-        text("Instructions: Jump from platform to platform using WASD collect as many coins as possible before the time limit ends if you get them all good Job", GameWidth / 2 - GameWidth / 2, GameHeight / 2 + GameHeight / 10)
-    }
-    if (Math.floor(millis() / 1000) >= GameTime) {
-        // remove ervrything
-        coinGroup.remove();
-        Sprites.visible = false;
-        if (Score <= Coinnumber) {
-            text("End Game", GameWidth / 2, GameHeight / 2)
-            text("Your Score:" + Score, GameWidth / 2 - 100, GameHeight / 2 + 200)
-            fill('black');
+
+        if (GameTime - Math.floor((millis() - startTime) / 1000) <= 0) {
+            // remove everything
+            coinGroup.remove();
+            Sprites.visible = false;
+            Gamestate = "end";
         }
-    }
-    //KeyBoard controls   
-    Player.colliding(Jumpsurfaces, Jump);
 
-    function Jump() {
-        console.log("Jump");
-        if (kb.pressing('w')) {
-            // Set sprite's velocity upwards
-            Player.vel.y = -8;
+        //KeyBoard controls   
+        Player.colliding(Jumpsurfaces, Jump);
+
+        function Jump() {
+            console.log("Jump");
+            if (kb.pressing('w')) {
+                // Set sprite's velocity upwards
+                Player.vel.y = -8;
+            }
         }
-    }
-    if (kb.pressing('a')) {
-        // Set sprite's velocity to the left
-        Player.vel.x = -5;
-    } else if (kb.pressing('d')) {
-        // Set sprite's velocity to the right
-        Player.vel.x = 5;
-    } else if (kb.pressing('s')) {
-        // Set sprite's velocity downwards
-        Player.vel.y = 5;
-    }
+        if (kb.pressing('a')) {
+            // Set sprite's velocity to the left
+            Player.vel.x = -5;
+        } else if (kb.pressing('d')) {
+            // Set sprite's velocity to the right
+            Player.vel.x = 5;
+        } else if (kb.pressing('s')) {
+            // Set sprite's velocity downwards
+            Player.vel.y = 5;
+        }
+    } else if (Gamestate == 'end'){
+        text("End Game", GameWidth / 2, GameHeight / 2)
+        text("Your Score:" + Score, GameWidth / 2 - 100, GameHeight / 2 + 200)
+        fill('black');
+        
 
-
+    }
 }
 
 function Coins() {
@@ -186,32 +187,28 @@ function Coins() {
 }
 
 function keyPressed() {
-    //
     if (checkkey(key)){
         restartGame();
     }
 }
 
-function checkkey(_keypressed){
-    if (_keypressed === "" ||_keypressed ==="Enter") {
-        console.log("Game Started");
-        return false;
-    }
-    else if (_keypressed === 'r' ||_keypressed === 'R'){
+function checkkey(_keypressed) {
+    if (_keypressed === 'r' || _keypressed === 'R'){
         console.log("Game Restared");
         return true;
+    } else {
+        return false;
     }
-    return false;
 }
 
-function restartGame(){
+function restartGame() {
     Score = 0;
-    GameTime = 30;
+    GameTime = GameLength;
     Gamestate = 'start';
-    coinGroup.remove();
+    coinGroup.removeAll();
+    Jumpsurfaces.removeAll();
     Sprites.visible = false;
-    background(Background);
-    }
+}
 /**************************
 
 /*******************************************************/
