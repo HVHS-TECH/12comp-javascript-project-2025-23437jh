@@ -33,8 +33,11 @@ var Restart;
 var startTime
 
 function preload() {
+    // Image for coins
     Coinimage = loadImage('Images/Goldcoin.png')
+    // image for platforms
     PlatformGrass = loadImage('Images/GrassPlatform.png')
+    // Image for background
     Background = loadImage('Images/GameScreenBackground.jpg')
 }
 
@@ -59,7 +62,7 @@ function makePlayer() {
     Player.color = 'cyan';
     Sprites.add(Player);
 }
-
+// function to make walls
 function makeWalls() {
     wallL = new Sprite(0, GameHeight, 8, GameHeight * 2, 'k');
     wallL.color = 'black';
@@ -73,9 +76,9 @@ function makeWalls() {
     wallBot = new Sprite(0, GameHeight, GameWidth * 2, 8, 'k');
     wallBot.color = 'black';
     wallBot.bounciness = 0;
-    // contents of Jumpsurfaces group 
+    // adding the bottom wall to Jumpsurfaces group
     Jumpsurfaces.add(wallBot);
-    // contents of Sprites group
+    // adding the walls to sprites group
     Sprites.add(wallBot);
     Sprites.add(wallTop);
     Sprites.add(wallRH);
@@ -103,8 +106,9 @@ function platforms() {
 /*******************************************************/
 function draw() {
     background(Background);
-
+// code for start screen
     if (Gamestate == 'start') {
+        // if player presses q gtame starts
         if (kb.pressing('q')) {
             Sprites.visible = true;
             makePlayer();
@@ -117,6 +121,7 @@ function draw() {
 
         text("Press Q to start", GameWidth / 2, GameHeight / 2)
         text("Instructions: Jump from platform to platform using WASD collect as many coins as possible before the time limit ends if you get them all good Job", GameWidth / 2 - GameWidth / 2, GameHeight / 2 + GameHeight / 10)
+        // Code for game screen
     } else if (Gamestate == 'running') {
         // This is the Score
         textSize(35);
@@ -124,7 +129,7 @@ function draw() {
         textSize(35);
         text("Timer:" + (GameTime - Math.floor((millis() - startTime) / 1000)), 60, 70);
         fill('Black');
-
+        // code for end screen
         if (GameTime - Math.floor((millis() - startTime) / 1000) <= 0) {
             // remove everything
             coinGroup.remove();
@@ -160,7 +165,7 @@ function draw() {
 
     }
 }
-
+// function to make the coins
 function Coins() {
     coinGroup = new Group();
 
@@ -185,13 +190,13 @@ function Coins() {
         Score++;
     }
 }
-
+//if r is pressed run the restart function
 function keyPressed() {
     if (checkkey(key)){
         restartGame();
     }
 }
-
+//check if r is pressed 
 function checkkey(_keypressed) {
     if (_keypressed === 'r' || _keypressed === 'R'){
         console.log("Game Restared");
@@ -200,7 +205,7 @@ function checkkey(_keypressed) {
         return false;
     }
 }
-
+// function to restart the game
 function restartGame() {
     Score = 0;
     GameTime = GameLength;
