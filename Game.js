@@ -120,9 +120,9 @@ function draw() {
     } else if (Gamestate == 'running') {
         // This is the Score
         textSize(35);
-        text("Score:" + Score, GameWidth / 10 - 65, GameHeight / 10 - 50);
+        text("Score:" + Score, 55, 40);
         textSize(35);
-        text("Timer:" + (GameTime - Math.floor((millis() - startTime) / 1000)), GameWidth / 10 - 70, 70);
+        text("Timer:" + (GameTime - Math.floor((millis() - startTime) / 1000)), 60, 70);
         fill('Black');
 
         if (GameTime - Math.floor((millis() - startTime) / 1000) <= 0) {
@@ -204,7 +204,7 @@ function checkkey(_keypressed) {
 function restartGame() {
     Score = 0;
     GameTime = GameLength;
-    Gamestate = 'start';
+    Gamestate = 'start';3
     coinGroup.removeAll();
     Jumpsurfaces.removeAll();
     Sprites.visible = false;
